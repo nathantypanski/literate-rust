@@ -1,0 +1,9 @@
+[package]
+
+name = "literate-rust"
+version = "0.1.0"
+authors = [ "ntypanski@gmail.com" ]
+
+[[bin]]
+
+name = "lrustc"
