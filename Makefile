@@ -6,7 +6,6 @@ all: $(PROGRAM_NAME)
 .PHONY: clean $(PROGRAM_NAME)
 
 $(PROGRAM_NAME): $(SRCDIR)/$(PROGRAM_NAME).rs
-	rustc src/liblrustc/lib.rs
 	rustc -L. $(SRCDIR)/$(PROGRAM_NAME).rs
 
 clean :
@@ -15,7 +14,6 @@ clean :
 run: ${PROGRAM_NAME}
 	./${PROGRAM_NAME}
 
-test: ${PROGRAM_NAME}
-	rustc --test --out-dir src/liblrustc src/liblrustc/lib.rs
-	RUST_LOG=debug RUST_TEST_TASKS=1 ./src/liblrustc/lrustc
+test:
+	rustc --test --out-dir . src/$(PROGRAM_NAME).rs
 	RUST_LOG=debug RUST_TEST_TASKS=1 ./lrustc

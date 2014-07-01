@@ -1,10 +1,20 @@
 #![feature(globs)]
 
+#![experimental]
+#![crate_id = "lrustc"]
+#![desc = "lrustc, the Literate Rust extension"]
+#![license = "MIT/ASL2"]
+
+#![feature(globs)]
+#![feature(phase)]
+
 extern crate getopts;
-
-extern crate lrustc;
-
+extern crate regex;
+extern crate debug;
+#[phase(plugin, link)] extern crate log;
 use std::os;
+
+mod liblrustc;
 
 pub fn opts() -> Vec<getopts::OptGroup> {
     use getopts::optopt;
@@ -21,5 +31,4 @@ fn main() {
     if matches.opt_present("d") {
 
     }
-    println!("Hello");
 }

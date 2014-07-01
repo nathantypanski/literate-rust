@@ -6,21 +6,8 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-#![experimental]
-#![crate_id = "lrustc"]
-#![desc = "lrustc, Literate Rust"]
-#![license = "MIT/ASL2"]
-#![crate_type = "dylib"]
-#![crate_type = "rlib"]
-
-#![feature(globs)]
-#![feature(phase)]
-
-extern crate regex;
-extern crate debug;
-#[phase(plugin, link)] extern crate log;
-
 use std::io::{File, fs, Open, Read};
+use std::str;
 use std::path::posix::Path;
 
 /// Convert a lrs path to a rs path.
@@ -37,6 +24,16 @@ fn lrs_path_to_rs(path: Path) -> Option<Path> {
     )
 }
 
+fn bird_line(line: &str) -> Option<String> {
+    if line.starts_with(">") {
+        let result = line.slice_from(1).to_string();
+        Some(result)
+    }
+    else {
+        None
+    }
+}
+
 fn dump(path: Path) {
     let file = match File::open_mode(&path, Open, Read) {
         Ok(f) => f,
@@ -47,12 +44,15 @@ fn dump(path: Path) {
 
 #[cfg(test)]
 mod tests {
+    use std::string::String;
+
     use super::lrs_path_to_rs;
+    use super::bird_line;
 
     fn expect_path(path: &str, expect: &str) {
         let path = Path::new(path.clone());
         let ps = lrs_path_to_rs(path).unwrap();
-        assert!(ps.as_str().unwrap() == expect);
+        assert_eq!(ps.as_str().unwrap(), expect);
     }
 
     #[test]
@@ -63,4 +63,9 @@ mod tests {
         assert!(lrs_path_to_rs(Path::new("lr.rs")).is_none());
     }
 
+    #[test]
+    fn test_bird_line() {
+        assert_eq!(bird_line("> fn main() {").unwrap(), String::from_str(" fn main() {"));
+        assert_eq!(bird_line(">").unwrap(), String::from_str(""));
+    }
 }
