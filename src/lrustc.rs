@@ -1,5 +1,3 @@
-#![feature(globs)]
-
 #![experimental]
 #![crate_id = "lrustc"]
 #![desc = "lrustc, the Literate Rust extension"]
