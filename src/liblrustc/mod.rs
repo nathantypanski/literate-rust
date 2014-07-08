@@ -6,8 +6,7 @@
 // option. This file may not be copied, modified, or distributed
 // except according to those terms.
 
-use std::io::{File, fs, Open, Read};
-use std::str;
+use std::io::{File, Open, Read};
 use std::path::posix::Path;
 
 /// Convert a lrs path to a rs path.
