@@ -18,7 +18,7 @@ fn main() {
     let args: Vec<String> = os::args();
 
     let opts = [
-        getopts::optopt("d", "dump", "Dump a regular rust file", "PATH"),
+        getopts::optflag("d", "dump", "Dump a regular rust file"),
         getopts::optopt("o", "", "set output file name", "NAME"),
         getopts::optflag("h", "help", "print this help menu")
     ];
