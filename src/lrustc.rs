@@ -9,25 +9,35 @@
 extern crate getopts;
 extern crate regex;
 extern crate debug;
+extern crate collections;
 #[phase(plugin, link)] extern crate log;
 use std::os;
 
 mod liblrustc;
 
-fn main() {
-    let args: Vec<String> = os::args();
-
+fn handle_options(mut args: Vec<String>) -> Option<getopts::Matches> {
+    let _binary = args.shift().unwrap();
     let opts = [
         getopts::optflag("d", "dump", "Dump a regular rust file"),
         getopts::optopt("o", "", "set output file name", "NAME"),
         getopts::optflag("h", "help", "print this help menu")
     ];
 
-    let matches = match getopts::getopts(args.tail(), opts) {
+    let matches = match getopts::getopts(args.as_slice(), opts) {
         Ok(m) => m,
-        Err(f) => fail!(f.to_str()),
+        Err(_) => return None,
+    };
+
+    Some(matches)
+}
+
+fn main() {
+    let args: Vec<String> = os::args();
+    let matches = match handle_options(args) {
+        Some(matches) => matches,
+        None => return
     };
     if matches.opt_present("d") {
-
+        println!("Dumping as Rust");
     }
 }
