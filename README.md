@@ -1,4 +1,4 @@
-literate-rust ![build-status](https://travis-ci.org/nathantypanski/literate-rust.svg?branch=master)
+literate-rust [![build-status](https://travis-ci.org/nathantypanski/literate-rust.svg?branch=master)](https://travis-ci.org/nathantypanski/rtop/builds)
 =============
 
 Support for literate programming in Rust
