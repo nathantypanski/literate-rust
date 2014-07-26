@@ -8,20 +8,21 @@
 
 use std::io;
 use std::path::posix::Path;
+use std::result::Result;
 use collections::vec;
 
 /// Convert a lrs path to a rs path.
-fn lrs_path_to_rs(path: Path) -> Option<Path> {
-    path.extension_str().and_then(
-        |ext| match ext {
-            "lrs" => {
-                let mut newpath = path.clone();
-                newpath.set_extension("rs");
-                Some(newpath)
-            }
-            _ => { None }
+fn lrs_path_to_rs(path: Path) -> Result<Path,()> {
+    match path.extension_str().unwrap_or("") {
+        "lrs" => {
+            let mut newpath = path.clone();
+            newpath.set_extension("rs");
+            Ok(newpath)
         }
-    )
+        _ => {
+            Err(())
+        }
+    }
 }
 
 fn bird_line(line: &str) -> Option<String> {
@@ -76,7 +77,7 @@ mod tests {
     fn test_lrs_path_to_rs() {
         expect_path("/tmp/lrustc.lrs", "/tmp/lrustc.rs");
         expect_path("~/tmp/afs.lrs", "~/tmp/afs.rs");
-        assert!(lrs_path_to_rs(Path::new("/tmp/lr.rs")).is_none());
-        assert!(lrs_path_to_rs(Path::new("lr.rs")).is_none());
+        assert!(lrs_path_to_rs(Path::new("/tmp/lr.rs")).is_err());
+        assert!(lrs_path_to_rs(Path::new("lr.rs")).is_err());
     }
 }
